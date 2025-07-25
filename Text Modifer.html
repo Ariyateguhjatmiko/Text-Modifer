@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Text Modifier</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 2.5em;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    textarea, input[type="text"], button {
+      width: 100%;
+      font-size: 1.0em;
+      padding: 20px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+    .flex-check {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .flex-check label {
+      margin-left: 8px;
+      margin-top: 0;
+    }
+    .buttons {
+      display: flex;
+      gap: 20px;
+    }
+    .buttons button {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Text Modifier</h2>
+
+  <label for="inputText">Masukkan Teks:</label>
+  <textarea id="inputText" rows="4" placeholder="Tulis sesuatu..."></textarea>
+
+  <div class="flex-check">
+    <input type="checkbox" id="toUppercase">
+    <label for="toUppercase">Ubah ke KAPITAL</label>
+  </div>
+
+  <label for="charToReplace">Ganti Karakter:</label>
+  <input type="text" id="charToReplace" placeholder="Contoh: spasi (tekan Space)">
+
+  <label for="replacementChar">Menjadi:</label>
+  <input type="text" id="replacementChar" placeholder="Contoh: _">
+
+  <div class="buttons">
+    <button onclick="modifyText()">Proses</button>
+    <button onclick="copyResult()">Salin Hasil</button>
+  </div>
+
+  <h3>Hasil:</h3>
+  <textarea id="outputText" rows="4" readonly></textarea>
+
+  <script>
+    function modifyText() {
+      let text = document.getElementById('inputText').value;
+      const toUpper = document.getElementById('toUppercase').checked;
+      const replaceChar = document.getElementById('charToReplace').value;
+      const withChar = document.getElementById('replacementChar').value;
+
+      if (replaceChar !== "") {
+        const escapedChar = replaceChar.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        const regex = new RegExp(escapedChar, "g");
+        text = text.replace(regex, withChar);
+      }
+
+      if (toUpper) {
+        text = text.toUpperCase();
+      }
+
+      document.getElementById('outputText').value = text;
+    }
+
+    function copyResult() {
+      const output = document.getElementById('outputText');
+      output.select();
+      output.setSelectionRange(0, 99999); // Untuk HP
+      document.execCommand("copy");
+      alert("✅ Teks berhasil disalin!");
+    }
+  </script>
+
+</body>
+</html>
